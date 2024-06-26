@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import BookForm from './components/bookmain';
 import BookTable from './components/bookdl';
 import { useLocalStorage } from './hooks/localstorage';
+import './App.css'
 
 interface Book {
   id: number;
