@@ -3,10 +3,17 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: #888;
+  align-items: center;
+  
 }
-.book{
-  border: 1 px solid red !important;
+.books{
+  margin:10px auto;
+  padding-left: 2rem;
+  background-color: gray;
+  align-content: center;
+  height: 500px;
+  border-radius: 20px;
+
 }
 .logo {
   height: 6em;

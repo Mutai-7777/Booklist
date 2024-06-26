@@ -104,7 +104,7 @@ const BookList = () => {
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
   return (
-    <div>
+    <div className='books'>
       <h1>Book Repository</h1>
       <BookForm addBook={addBook} />
       <input
