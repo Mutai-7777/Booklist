@@ -2,7 +2,6 @@ import React, { useState, useEffect, useReducer } from 'react';
 import BookForm from './components/bookmain';
 import BookTable from './components/bookdl';
 import { useLocalStorage } from './hooks/localstorage';
-import './App.css'
 
 interface Book {
   id: number;
@@ -21,29 +20,28 @@ const ACTIONS = {
 type Action =
   | { type: typeof ACTIONS.ADD_BOOK; payload: Book }
   | { type: typeof ACTIONS.DELETE_BOOK; payload: number }
-  | { type: typeof ACTIONS.UPDATE_BOOK; payload: Book }
+  | { type: typeof ACTIONS.UPDATE_BOOK; payload: any }
   | { type: typeof ACTIONS.SET_BOOKS; payload: Book[] };
 
-const bookReducer = (books: any[], action: Action): Book[] => {
-  switch (action.type) {
-    case ACTIONS.ADD_BOOK:
-      const newId = Math.max(...books.map(book => book.id), 0) + 1;
-      return [...books, { id: newId,...action.payload as Book}];
-    case ACTIONS.DELETE_BOOK:
-      return books.filter((book) => book.id !== action.payload);
-    case ACTIONS.UPDATE_BOOK:
-      return books.map((book) => {
-        if (book.id === action.payload.id) {
-          return action.payload;
-        }
-        return book;
-      });
-    case ACTIONS.SET_BOOKS:
-      return action.payload;
-    default:
-      return books;
-  }
-};
+  const bookReducer = (books: Book[], action: Action): Book[] => {
+    switch (action.type) {
+      case ACTIONS.ADD_BOOK:
+        return [...books, { ...action.payload, id: Date.now() }];
+      case ACTIONS.DELETE_BOOK:
+        return books.filter((book) => book.id !== action.payload);
+      case ACTIONS.UPDATE_BOOK:
+        return books.map((book) => {
+          if (book.id === action.payload) {
+            return action.payload;
+          }
+          return book;
+        });
+      case ACTIONS.SET_BOOKS:
+        return action.payload;
+      default:
+        return books;
+    }
+  };
 
 const BookList = () => {
   const [books, dispatch] = useReducer(bookReducer, []);
@@ -57,7 +55,7 @@ const BookList = () => {
   }, [storedBooks]);
 
   const addBook = (book: Book) => {
-    const newBook = { ...book, id: Number(book.id) };
+    const newBook = { ...book, id: Date.now() };
     dispatch({ type: ACTIONS.ADD_BOOK, payload: newBook });
     setStoredBooks([...books, newBook]);
   };
@@ -105,7 +103,7 @@ const BookList = () => {
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
   return (
-    <div className='book'>
+    <div>
       <h1>Book Repository</h1>
       <BookForm addBook={addBook} />
       <input
